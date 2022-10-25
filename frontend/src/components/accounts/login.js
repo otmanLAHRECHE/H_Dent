@@ -16,7 +16,7 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import Autocomplete from '@mui/material/Autocomplete';
 
-import { login_api } from '../../actions/authentification';
+import { getAllUsersForLogin, login_api } from '../../actions/authentification';
 import Alt from '../layouts/alert';
 
 function Copyright(props) {
@@ -47,6 +47,9 @@ export default function SignInSide() {
   const [password, setPassword] = useState("");
   const [doctor, setDoctor] = useState(null);
 
+  const [passwordState, setPasswordState] = useState(false);
+  const [doctorState, setDoctorState] = useState(false);
+
 
 
   const [userNameError, setUserNameError] = useState([])
@@ -56,20 +59,26 @@ export default function SignInSide() {
   const [open, setOpen] = useState(false)
 
 
+  React.useEffect( () =>{
+
+    const fetchUsersData = async() =>{
+      setAllUsers(await getAllUsersForLogin());
+    }
+    console.log("fetch users data")
+    fetchUsersData();
+  },[])
+
+
   
 
   const handleSubmit = async (event) => {
     
-    setErrorEmail([false,""])
-    setErrorPassword([false,""])
-    setAlert(false)
-    setOpen(true)
+    setUserNameError([false,""]);
+    setPasswordError([false,""]);
+    setDoctorError([false,""]);
 
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    var email = data.get("email")
-    var password = data.get("password")
-    var login_state = await login_api(email, password);
+
+
   
 
 
@@ -109,31 +118,37 @@ export default function SignInSide() {
                                     options={allUsers}
                                     sx={{ width: 300 }}
                                     renderInput={(params) => <TextField {...params} error={userNameError[0]}
-                                    helperText={userNameError[1]} fullWidth variant="standard" label="Arrivage" 
+                                    helperText={userNameError[1]} fullWidth variant="standard" label="Utilisateur" 
                                     required/>}
                                     /> 
             <TextField
               margin="normal"
               required
               fullWidth
+              value={password}
+              disabled={passwordState}
               name="password"
               label="Password"
               type="password"
               id="password"
               autoComplete="current-password"
+              error={passwordError[0]}
+              helperText={passwordError[1]}
+              onChange={(event) => {setPassword(event.target.value)}}
             />
 
                       <Autocomplete
                                     disablePortal
                                     id="medic_id"
-                                    value={arivage}
+                                    value={doctor}
+                                    disabled={doctorState}
                                     onChange={(event, newVlue) =>{
                                         
                                     }}
-                                    options={allArivage}
+                                    options={allDoctors}
                                     sx={{ width: 300 }}
-                                    renderInput={(params) => <TextField {...params} error={arivageError[0]}
-                                    helperText={arivageError[1]} fullWidth variant="standard" label="Arrivage" 
+                                    renderInput={(params) => <TextField {...params} error={doctorError[0]}
+                                    helperText={doctorError[1]} fullWidth variant="standard" label="Medecin dentiste" 
                                     required/>}
                                     /> 
 
@@ -157,9 +172,9 @@ export default function SignInSide() {
 
 
 
-            {alert ? <Alt type='error' message='Authentification error !!' /> : null}
+            {alert ? <Alt type='error' message='Authentification error !!' onClose={()=> setAlert(false)} /> : null}
             
-            {loginError ? <Alt type='error' message='Error, verifier les champs...' /> : null}
+            {loginError ? <Alt type='error' message='Error, verifier les champs...' onClose={()=> setLoginError(false)} /> : null}
 
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}

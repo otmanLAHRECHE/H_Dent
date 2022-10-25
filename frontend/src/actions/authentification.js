@@ -62,9 +62,9 @@ export const login_api = async (username, password) => {
 
 
 // REGISTER USER
-export const register = async (email,password,service,token) => {
+export const register = async (user,password,type,token) => {
   const response = await fetch(
-      '/accounts/create_user/',
+      '/accounts/auth/users/',
       {
         method: 'POST',
         headers: {
@@ -73,16 +73,16 @@ export const register = async (email,password,service,token) => {
           'Authorization': `Token ${token}`,
         },
         body: JSON.stringify({
-              "email": email,
+              "user_name": user,
               "password": password,
-              "service": service,
+              "type": type,
             })
       }
   );
   const text = await response.text();
   if (response.status === 200) {
     console.log("success", JSON.parse(text));
-    console.log("User"+email+" created");
+    console.log("User: "+user+" created");
   } else {
     console.log("failed", text);
     Object.entries(JSON.parse(text)).forEach(([key, value]) => {
@@ -112,6 +112,31 @@ export const logout =  async (token) => {
   if (response.status === 200) {
     console.log("success", JSON.parse(text));
     console.log("User" + email + " created");
+  } else {
+    console.log("failed", text);
+    Object.entries(JSON.parse(text)).forEach(([key, value]) => {
+      fail(`${key}: ${value}`);
+    });
+  }
+};
+
+
+export const getAllUsersForLogin = () => async() => {
+  
+  const response = await fetch(
+      '/accounts/api/get_all_users_for_login/',
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify()
+      }
+  );
+  const text = await response.text();
+  if (response.status === 200) {
+    console.log("success", JSON.parse(text));
   } else {
     console.log("failed", text);
     Object.entries(JSON.parse(text)).forEach(([key, value]) => {

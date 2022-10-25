@@ -28,3 +28,16 @@ def getAllUsers(request):
     else :
         return Response(status=status.HTTP_401_UNAUTHORIZED)  
 
+
+
+
+def getAllUsersForLogin(request):
+    if request.method == 'GET':
+        queryset = User.objects.all()
+
+        serial = UserLoginSerialize(queryset, many=True)
+
+        return Response(status=status.HTTP_200_OK,data=serial.data)
+
+    else :
+        return Response(status=status.HTTP_401_UNAUTHORIZED)  
