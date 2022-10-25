@@ -35,28 +35,30 @@ const theme = createTheme();
 
 export default function SignInSide() {
 
-  const [alert, setAlert] = useState(false);
+  const [alert, setAlert] = React.useState(false);
+  const [loged, setLoged] = React.useState(false);
 
-  const [loginError, setLoginError] = useState(false);
+
+  const [loginError, setLoginError] = React.useState(false);
 
 
-  const [allUsers, setAllUsers] = useState([]);
-  const [allDoctors, setAllDoctors] = useState([]);
+  const [allUsers, setAllUsers] = React.useState([]);
+  const [allDoctors, setAllDoctors] = React.useState([]);
   
-  const [user, setUser] = useState(null);
-  const [password, setPassword] = useState("");
-  const [doctor, setDoctor] = useState(null);
+  const [user, setUser] = React.useState(null);
+  const [password, setPassword] = React.useState("");
+  const [doctor, setDoctor] = React.useState(null);
 
-  const [passwordState, setPasswordState] = useState(false);
-  const [doctorState, setDoctorState] = useState(false);
+  const [passwordState, setPasswordState] = React.useState(false);
+  const [doctorState, setDoctorState] = React.useState(false);
 
 
 
-  const [userNameError, setUserNameError] = useState([])
-  const [passwordError, setPasswordError] = useState([])
-  const [doctorError, setDoctorError] = useState([])
+  const [userNameError, setUserNameError] = React.useState([])
+  const [passwordError, setPasswordError] = React.useState([])
+  const [doctorError, setDoctorError] = React.useState([])
 
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = React.useState(false)
 
 
   React.useEffect( () =>{
@@ -76,7 +78,7 @@ export default function SignInSide() {
     setDoctorError([false,""]);
 
   };
-  
+
 
   if (localStorage.getItem("auth_token") && loged == true) {
     console.log("navigate")
