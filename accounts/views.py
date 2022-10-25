@@ -40,4 +40,4 @@ def getAllUsersForLogin(request):
         return Response(status=status.HTTP_200_OK,data=serial.data)
 
     else :
-        return Response(status=status.HTTP_401_UNAUTHORIZED)  
+        return Response(status=status.HTTP_400_BAD_REQUEST)  
