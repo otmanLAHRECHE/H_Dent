@@ -69,20 +69,14 @@ export default function SignInSide() {
   },[])
 
 
-  
-
   const handleSubmit = async (event) => {
     
     setUserNameError([false,""]);
     setPasswordError([false,""]);
     setDoctorError([false,""]);
 
-
-
-  
-
-
   };
+  
 
   if (localStorage.getItem("auth_token") && loged == true) {
     console.log("navigate")
@@ -113,6 +107,11 @@ export default function SignInSide() {
                                     id="user_id"
                                     value={user}
                                     onChange={(event, newVlue) =>{
+                                      if(newVlue.id == 1){
+                                        setDoctorState(true)
+                                      }else{
+                                        setDoctorState(false)
+                                      }
                                         
                                     }}
                                     options={allUsers}
