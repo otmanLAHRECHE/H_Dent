@@ -30,12 +30,14 @@ def getAllUsers(request):
 
 
 
-
+@api_view(['GET'])
 def getAllUsersForLogin(request):
     if request.method == 'GET':
         queryset = User.objects.all()
 
         serial = UserLoginSerialize(queryset, many=True)
+
+        print(serial.data)
 
         return Response(status=status.HTTP_200_OK,data=serial.data)
 

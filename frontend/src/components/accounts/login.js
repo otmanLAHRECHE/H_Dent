@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import {Navigate} from 'react-router-dom';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
@@ -41,7 +42,7 @@ export default function SignInSide() {
 
   const [loginError, setLoginError] = React.useState(false);
 
-
+  const [userData, setUserData] = React.useState([]);
   const [allUsers, setAllUsers] = React.useState([]);
   const [allDoctors, setAllDoctors] = React.useState([]);
   
@@ -54,30 +55,83 @@ export default function SignInSide() {
 
 
 
-  const [userNameError, setUserNameError] = React.useState([])
-  const [passwordError, setPasswordError] = React.useState([])
-  const [doctorError, setDoctorError] = React.useState([])
+  const [userNameError, setUserNameError] = React.useState([]);
+  const [passwordError, setPasswordError] = React.useState([]);
+  const [doctorError, setDoctorError] = React.useState([]);
+  const [response, setResponse] = React.useState("");
 
-  const [open, setOpen] = React.useState(false)
-
+  const [open, setOpen] = React.useState(false);
 
   React.useEffect( () =>{
 
     const fetchUsersData = async() =>{
-      setAllUsers(await getAllUsersForLogin());
+      setUserData(await getAllUsersForLogin());
     }
-    console.log("fetch users data")
     fetchUsersData();
   },[])
 
+  React.useEffect( () =>{
+    setAllUsers(userData);
+  },[userData]);
 
-  const handleSubmit = async (event) => {
+
+  const handleSubmit = async () => {
+
+    var test = true;
     
     setUserNameError([false,""]);
     setPasswordError([false,""]);
     setDoctorError([false,""]);
 
+    if (user == null){
+      setUserNameError([true, "Chapm est obligatoire"]);
+      setLoginError(true);
+      test = false;
+    }else{
+      if(user.id ==1){
+        if(password == null || password == ""){
+          setPasswordError([true, "Chapm est obligatoire"]);
+          setLoginError(true);
+          test = false;
+        }
+
+        if(test){
+          setResponse(await login_api(user.label, password.toString()));
+        }
+      }else{
+        if(doctor == null){
+          setDoctorError([true, "Chapm est obligatoire"]);
+          setLoginError(true);
+          test = false;
+        }
+
+        if(test){
+
+        }
+      }
+    }
+
   };
+
+
+
+  React.useEffect( () =>{
+
+   if(response =="logged"){
+    setOpen(true);
+    setTimeout(()=>{
+      console.log("timeout....")
+      setLoged(true);
+    }, 2000)
+
+   }else if(response == "error"){
+    setAlert(true);
+
+   }
+  },[response]);
+
+
+  
 
 
   if (localStorage.getItem("auth_token") && loged == true) {
@@ -103,17 +157,25 @@ export default function SignInSide() {
           <Typography component="h1" variant="h5">
             H_Dent login
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box component="form" noValidate sx={{ mt: 1 }}>
                     <Autocomplete
                                     disablePortal
                                     id="user_id"
                                     value={user}
                                     onChange={(event, newVlue) =>{
-                                      if(newVlue.id == 1){
-                                        setDoctorState(true)
-                                      }else{
-                                        setDoctorState(false)
+                                      setUser(newVlue);
+                                      if(newVlue != null){
+                                        if(newVlue.id == 1){
+                                          setDoctorState(true);
+                                          setPasswordState(false);
+                                          setPassword("")
+                                        }else{
+                                          setDoctorState(false);
+                                          setPasswordState(true);
+                                          setPassword("123456789");
+                                        }
                                       }
+                                      
                                         
                                     }}
                                     options={allUsers}
@@ -158,10 +220,10 @@ export default function SignInSide() {
               label="Remember me"
             />
             <Button
-              type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              onClick={handleSubmit}
             >
               Log in
             </Button>

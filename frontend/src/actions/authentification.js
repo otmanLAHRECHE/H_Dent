@@ -41,20 +41,19 @@ export const login_api = async (username, password) => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              "email": username,
+              "user_name": username,
               "password": password,
             })
         }
     );
   const text = await response.text();
   if (response.status === 200) {
-    console.log("success", JSON.parse(text).auth_token);
+    console.log(JSON.parse(text));
     await localStorage.setItem("auth_token", JSON.parse(text).auth_token);
     return "logged";
-
   } else {
     console.log(text);
-    return text;
+    return "error";
 
   }
 };
@@ -121,7 +120,7 @@ export const logout =  async (token) => {
 };
 
 
-export const getAllUsersForLogin = () => async() => {
+export const getAllUsersForLogin = async() => {
   
   const response = await fetch(
       '/accounts/api/get_all_users_for_login/',
@@ -136,11 +135,9 @@ export const getAllUsersForLogin = () => async() => {
   );
   const text = await response.text();
   if (response.status === 200) {
-    console.log("success", JSON.parse(text));
+    return JSON.parse(text);
   } else {
     console.log("failed", text);
-    Object.entries(JSON.parse(text)).forEach(([key, value]) => {
-      fail(`${key}: ${value}`);
-    });
+    return "error";
   }
 };
