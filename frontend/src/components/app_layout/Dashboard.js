@@ -28,11 +28,13 @@ import Groups3Icon from '@mui/icons-material/Groups3';
 import EventIcon from '@mui/icons-material/Event';
 import OutputIcon from '@mui/icons-material/Output';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
+import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
 
 
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import Dashboard_details from './Dashboard-details';
 
 
 
@@ -92,9 +94,33 @@ function DashboardContent() {
     setOpen(!open);
   };
 
+  const [toolBar,setToolBar] = React.useState("Tableau de bord");
+
   const [page, setPage] = React.useState([true,false,false,false]);
 
-  const [toolBar,setToolBar] = React.useState("Tableau de bord")
+
+  const clickDashboard = () =>{
+    
+    setPage([true,false,false,false,false,false,false,false])
+    setToolBar("Tableau de bord et statestiques")
+  };
+  const clickUsers = () =>{
+      
+    setPage([true,false,false,false,false,false,false,false])
+    setToolBar("Utilisateurs")
+  };
+  const clickDoctors = () =>{
+      
+    setPage([true,false,false,false,false,false,false,false])
+    setToolBar("Medecins dentiste")
+  };
+  const clickStatestiques = () =>{
+      
+    setPage([true,false,false,false,false,false,false,false])
+    setToolBar("Statestiques des cabinets")
+  };
+
+  
   
   return (
     <ThemeProvider theme={mdTheme}>
@@ -150,21 +176,21 @@ function DashboardContent() {
                   </ListItemIcon>
                   <ListItemText primary="Tableau de bord"/>
                 </ListItemButton>
-                <ListItemButton selected={page[1]} onClick={clickSortie}>
+                <ListItemButton selected={page[1]} onClick={clickUsers}>
                   <ListItemIcon>
-                    <OutputIcon />
+                    <SupervisedUserCircleIcon />
                   </ListItemIcon>
                   <ListItemText primary="Utilisateurs" />
                 </ListItemButton>
-                <ListItemButton selected={page[2]} onClick={clickCommande}>
+                <ListItemButton selected={page[2]} onClick={clickDoctors}>
                   <ListItemIcon>
-                    <TextSnippetIcon />
+                    <PeopleIcon />
                   </ListItemIcon>
                   <ListItemText primary="Medecines dentiste" />
                 </ListItemButton>
-                <ListItemButton selected={page[3]} onClick={clickStock}>
+                <ListItemButton selected={page[3]} onClick={clickStatestiques}>
                   <ListItemIcon>
-                    <InventoryIcon />
+                    <BarChartIcon />
                   </ListItemIcon>
                   <ListItemText primary="Statestiques" />
                 </ListItemButton>
@@ -186,14 +212,10 @@ function DashboardContent() {
         <Toolbar />
 
         
-        {page[0] ? <Statestiques/> : null}
-        {page[1] ? <Bon_sortie/> : null}
-        {page[2] ? <Bon_sortie_details/> : null}
-        {page[3] ? <Stock/> : null}
-        {page[4] ? <Medicaments/> : null}
-        {page[5] ? <Fournisseur/> : null}
-        {page[6] ? <Destinataire/> : null}
-        {page[7] ? <Expired_stock/> : null}
+        {page[0] ? <Dashboard_details/> : null}
+        {page[1] ? <Dashboard_details/> : null}
+        {page[2] ? <Dashboard_details/> : null}
+        {page[3] ? <Dashboard_details/> : null}
         
 
         
