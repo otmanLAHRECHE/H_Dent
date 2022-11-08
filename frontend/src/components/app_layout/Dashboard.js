@@ -101,22 +101,22 @@ function DashboardContent() {
 
   const clickDashboard = () =>{
     
-    setPage([true,false,false,false,false,false,false,false])
+    setPage([true,false,false,false])
     setToolBar("Tableau de bord et statestiques")
   };
   const clickUsers = () =>{
       
-    setPage([true,false,false,false,false,false,false,false])
+    setPage([false,true,false,false])
     setToolBar("Utilisateurs")
   };
   const clickDoctors = () =>{
       
-    setPage([true,false,false,false,false,false,false,false])
+    setPage([false,false,true,false])
     setToolBar("Medecins dentiste")
   };
   const clickStatestiques = () =>{
       
-    setPage([true,false,false,false,false,false,false,false])
+    setPage([false,false,false,true])
     setToolBar("Statestiques des cabinets")
   };
 
